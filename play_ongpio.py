@@ -12,7 +12,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(23, GPIO.IN)
 
 ##Enable audio routing.
-os.system('~/setup_jack.sh')
+#os.system('~/setup_jack.sh')
 
 ##Annouce we are running and clear the input latch.
 txlog.initialise_subsystem("DoorAlarm")
@@ -31,7 +31,7 @@ while True:
        print "Edge detected waiting playing audio";
 
     ##Play the audio
-    os.system('mpg123 -q ~/audio/binary-language.mp3')
+    os.system('mpg123 -q /home/pi/audio/binary-language.mp3')
 
     if DEBUG:
        print "waiting one before clearing";

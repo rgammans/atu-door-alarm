@@ -1,0 +1,17 @@
+[Unit]
+Description=ATU Door alarm
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python2.7 /home/pi/atu-door-alarm/play_ongpio.py
+ExecStop=/bin/kill -HUP ${MAINPID}
+StandardInput=tty
+StandardOutput=tty
+TTYPath=/dev/tty7
+Restart=Always
+RestartSec=5
+
+[Install]
+WantedBy=default.target
