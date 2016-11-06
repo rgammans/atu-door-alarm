@@ -1,4 +1,5 @@
 import socket
+import sys
 
 ##Use the global broadcast - not because we expect global
 # reach , but because it makes the script 0config and we 
@@ -23,10 +24,16 @@ def initialise_subsystem(subsys_name):
                      socket.SOCK_DGRAM) # UDP
 
     sock.setsockopt(socket.SOL_SOCKET,socket.SO_BROADCAST,1)
-    sock.sendto(subsys_name+" started.", (UDP_IP, UDP_PORT))
-    for m in backlog:
-        send_msg(m)
-    backlog=[]
+    try:
+	    sock.sendto(subsys_name+" started.", (UDP_IP, UDP_PORT))
+    except socket.error, e:
+        sock = None 
+        return False, e
+    else:
+        for m in backlog:
+            send_msg(m)
+        backlog=[]
+    return True, None
 
 def send_msg(msg):
     global backlog
@@ -34,14 +41,3 @@ def send_msg(msg):
         backlog.append(msg)
     else:
         sock.sendto(msg, (UDP_IP, UDP_PORT))
-
-
-
-
-
-
-
-
-
-
-

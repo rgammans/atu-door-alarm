@@ -15,7 +15,9 @@ GPIO.setup(23, GPIO.IN)
 #os.system('~/setup_jack.sh')
 
 ##Annouce we are running and clear the input latch.
-txlog.initialise_subsystem("DoorAlarm")
+nwok,error = txlog.initialise_subsystem("DoorAlarm")
+if not nwok: print "No Network found continuing without net ({0})".format(error)
+
 GPIO.setup(24, GPIO.OUT, initial=GPIO.LOW)
 sleep(0.001);
 GPIO.output(24, GPIO.HIGH)
@@ -25,8 +27,8 @@ while True:
     #Wait for a change in the PIR sensor
     GPIO.wait_for_edge(23, GPIO.RISING)
 
-    #Report alarm fired to game log server.
-    txlog.send_msg("Door alarm triggered")
+    #Report alarm fired to game log server, if we found a network.
+    if nwok: txlog.send_msg("Door alarm triggered")
     if DEBUG:
        print "Edge detected waiting playing audio";
 
