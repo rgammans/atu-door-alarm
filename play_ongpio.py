@@ -33,12 +33,18 @@ while True:
        print "Edge detected waiting playing audio";
 
     ##Play the audio
-    os.system('mpg123 -q /home/pi/audio/binary-language.mp3')
+    os.system('mpg123 -q /home/pi/audio/play-this.mp3')
 
     if DEBUG:
        print "waiting one before clearing";
-       sleep(1)
-       print "cleared latch"
+
+    sleep(1)
+
+    if DEBUG:
+       #Print this first as there slight race condition	
+       #between setting pin24 high and waiting for a rising edge on pin23
+       #which we eneed to keep a s mall as possible
+       print "clearing latch"
 
     #Clear the flip-flop latch; after playback has finished
     GPIO.output(24, GPIO.LOW)
